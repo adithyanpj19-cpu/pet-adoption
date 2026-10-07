@@ -1,0 +1,62 @@
+{% extends "breederbase.html" %}
+{% block content %}
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+    <div class="container position-relative">
+        <h1>Booking Requests</h1>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/shophome">Home</a></li>
+                <li class="current">Requests</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="container mt-5">
+    <h2 class="text-center">Booking Requests</h2>
+    <table class="table table-bordered mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Adopter Name</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.user.name }}</td>
+                <td>{{ booking.description }}</td>
+                <td>{{ booking.date }}</td>
+                <td>
+                    {% if booking.status == "Pending" %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    {% elif booking.status == "Approved" %}
+                        <span class="badge bg-success">Approved</span>
+                    {% elif booking.status == "Rejected" %}
+                        <span class="badge bg-danger">Rejected</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ booking.status }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if booking.status == "Pending" %}
+                        <a href="{% url 'update_booking_status' booking.id 'Approved' %}" class="btn btn-success btn-sm">Approve</a>
+                        <a href="{% url 'update_booking_status' booking.id 'Rejected' %}" class="btn btn-danger btn-sm">Reject</a>
+                        <a href="/breeder_chat?bid={{ booking.id }}&uid={{ booking.user.id }}" class="btn btn-primary">chat</a>
+
+                    {% else %}
+                        <span class="text-muted">No action needed</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No booking requests found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

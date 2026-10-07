@@ -1,0 +1,49 @@
+{% extends "userbase.html" %}
+
+{% block content %}
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+    <div class="container position-relative">
+        <h1>View Products</h1>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/shophome">Home</a></li>
+                <li class="current">Products</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row gy-4">
+        <div class="col-lg-12">
+            <h2 class="text-center">Available Products</h2>
+        </div>
+
+        {% for product in products %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text"><strong>Brand:</strong> {{ product.brand }}</p>
+                    <p class="card-text"><strong>Price:</strong> {{ product.price }}</p>
+                    <p class="card-text"><strong>Quantity:</strong> {{ product.quantity }}</p>
+                    <p class="card-text">{{ product.description }}</p>
+                    <form action="" method="post" style="display: inline;">
+                        {% comment %} {% url 'add_to_cart' product.id %} {% endcomment %}
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ product.id }}">
+                        <input type="number" name="quantity" max="{{product.quantity}}" min="1" value="1" placeholder="Quantity" class="form-control form-control-sm" style="width: 100px; display: inline;">
+                        <button type="submit" class="btn btn-success btn-sm">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-lg-12 text-center">
+            <p>No products found. Start exploring!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

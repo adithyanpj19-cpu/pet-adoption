@@ -1,0 +1,93 @@
+{% extends "shopbase.html" %}
+{% block content %}
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+    <div class="container position-relative">
+      <h1>Add Products</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="/shophome">Home</a></li>
+          <li class="current">Add Products</li>
+        </ol>
+      </nav>
+    </div>
+</div>
+
+<section id="add-product" class="section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <!-- Form Section -->
+      <div class="row gy-4">
+        <div class="col-lg-12">
+          <form action="" method="post" enctype="multipart/form-data" class="" data-aos="fade-up" data-aos-delay="400">
+            {% csrf_token %}
+            <div class="row gy-4">
+
+              <div class="col-md-6">
+                <input type="text" name="name" class="form-control" placeholder="Product Name" required>
+              </div>
+              <div class="col-md-6">
+                <input type="text" name="brand" class="form-control" placeholder="Product Brand Name" required>
+              </div>
+
+              <div class="col-md-12">
+                <input type="number" class="form-control" name="price" placeholder="Price" required>
+              </div>
+
+              <div class="col-md-12">
+                <input type="number" class="form-control" name="quantity" placeholder="Quantity" required>
+              </div>
+
+              <div class="col-md-12">
+                <input type="file" name="image" class="form-control" required>
+              </div>
+
+              <div class="col-md-12">
+                  <textarea name="description" class="form-control" placeholder="Description" required></textarea>
+              </div>
+
+              <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary">Add Product</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Products Card Section -->
+      <div class="row gy-4 mt-5">
+        <div class="col-lg-12">
+          <h2 class="text-center">Your Products</h2>
+        </div>
+
+        {% for product in products %}
+        <div class="col-lg-4 col-md-6">
+          <div class="card h-100" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text"><strong>Brand:</strong> {{ product.brand }}</p>
+              <p class="card-text"><strong>Price:</strong> {{ product.price }}</p>
+              <p class="card-text"><strong>Quantity:</strong> {{ product.quantity }}</p>
+              <p class="card-text">{{ product.description }}</p>
+              
+              {% comment %} update the  product quantity here {% endcomment %}
+               <form action="{% url 'product_add_quantity' %}" method="POST" class="d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ product.id }}">
+                <input type="number" name="quantity" class="form-control">
+                <br>
+                <button type="submit" class="btn btn-primary">Add</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-lg-12 text-center">
+          <p>No products found. Start adding your first product!</p>
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+</section>
+{% endblock content %}

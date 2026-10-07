@@ -1,0 +1,55 @@
+{% extends "adminbase.html" %}
+{% block content %}
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+    <div class="container position-relative">
+        <h1>Shops</h1>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/userhome">Home</a></li>
+                <li class="current">Shop</li>
+            </ol>
+        </nav>
+    </div>
+  </div>
+<div class="container mt-5">
+    <h2 class="text-center">All Registered Shops</h2>
+
+    <table class="table table-bordered mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Shop Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Location</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for shop in shops %}
+            <tr>
+                <td>{{ shop.id }}</td>
+                <td>{{ shop.name }}</td>
+                <td>{{ shop.email }}</td>
+                <td>{{ shop.phone }}</td>
+                <td>{{ shop.address }}</td>
+                
+                    <td>
+                        {% if shop.shopid.is_active == 0 %}
+                        <a href="/shop_update_status?id={{shop.id}}&status=1" class="btn btn-success">Approve</a>
+                        {% else %}
+                        <a href="/shop_update_status?id={{shop.id}}&status=0" class="btn btn-danger">Reject</a>
+                        {% endif %}
+                    </td>
+
+           
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No shops found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

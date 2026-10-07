@@ -1,0 +1,50 @@
+{% extends 'breederbase.html' %}
+
+{% block content %}
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+    <div class="container position-relative">
+        <h1> Requester Details</h1>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/userhome">Home</a></li>
+                <li class="current">Requests</li>
+            </ol>
+        </nav>
+    </div>
+  </div>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Details</h2>
+
+    {% if request %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>User</th>
+                        <th>Living Situation</th>
+                        <th>Pet Experience</th>
+                        <th>Employment Status</th>
+                        <th>Other pets details</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        
+                        <td>{{ request.user.name }}</td>
+                        <td>{{ request.living_situation }}</td>
+                        <td>{{ request.pet_experience }}</td>
+                        <td>{{ request.employment_status }}</td>
+                        <td>{{ request.other_pets_details }}</td>
+                    </tr>
+                    
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center fs-5">No details.</div>
+    {% endif %}
+</div>
+{% endblock %}

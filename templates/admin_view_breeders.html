@@ -1,0 +1,57 @@
+{% extends "adminbase.html" %}
+{% block content %}
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+    <div class="container position-relative">
+        <h1>Breeders</h1>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/userhome">Home</a></li>
+                <li class="current">Breeders</li>
+            </ol>
+        </nav>
+    </div>
+  </div>
+<div class="container mt-5">
+
+  
+
+    <h3 class="mt-4">Breeders</h3>
+    <table class="table table-bordered mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Experience</th>
+                <th>Specilization</th>
+                <th>Actions</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for breeder in breeders %}
+            <tr>
+                <td>{{ breeder.id }}</td>
+                <td>{{ breeder.name }}</td>
+                <td>{{ breeder.email }}</td>
+                <td>{{ breeder.phone }}</td>
+                <td>{{ breeder.experience_years }}</td>
+                <td>{{ breeder.specialization }}</td>
+                <td>
+                    {% if breeder.user.is_active == 0 %}
+                    <a href="/breeder_update_status?id={{breeder.id}}&status=1" class="btn btn-success">Approve</a>
+                    {% else %}
+                    <a href="/breeder_update_status?id={{breeder.id}}&status=0" class="btn btn-danger">Reject</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No breeders found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

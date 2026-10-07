@@ -1,0 +1,59 @@
+{% extends 'userbase.html' %}
+{% block content %}
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+    <div class="container position-relative">
+        <h1>Breeder Bookings</h1>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/shophome">Home</a></li>
+                <li class="current">Bookings</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="container mt-5">
+    <h2 class="text-center">My Breeder Bookings</h2>
+    <table class="table table-bordered mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Breeder Name</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.breeder.name }}</td>
+                <td>{{ booking.description }}</td>
+                <td>{{ booking.date }}</td>
+                <td>
+                    {% if booking.status == "Pending" %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    {% elif booking.status == "Approved" %}
+                        <span class="badge bg-success">Approved</span>
+                    {% elif booking.status == "Rejected" %}
+                        <span class="badge bg-danger">Rejected</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ booking.status }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if booking.status == "Pending" %}
+                        
+                        <a href="/user_chat?bid={{ booking.id }}&rid={{ booking.breeder.id }}" class="btn btn-primary">chat</a>
+                    {% else %}
+                        <span class="text-muted text-center">N/A</span>
+                    {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No bookings found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'userbase.html' %}
+{% load create_extras %}
+
+{% block content %}
+
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+    <div class="container position-relative">
+        <h1>Cart Page</h1>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/shophome">Home</a></li>
+                <li class="current">Cart</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center"> </h2>
+
+    {% if cart_items %}
+    <div class="card shadow-lg p-4">
+        <table class="table align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="rounded" width="50">
+                            <span class="ms-3 fw-bold">{{ item.product.name }}</span>
+                        </div>
+                    </td>
+                    <td>${{ item.product.price }}</td>
+                    <td>{{ item.quantity }}</td>
+
+                    <td class="fw-bold text-success">${{ item|total_price }}</td>                    <td>
+                        <a href="/remove_from_cart?id={{ item.id }}" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Remove
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center p-3">
+            <h4 class="fw-bold">Total: <span class="text-primary">${{ total }}</span></h4>
+            <a href="/user_make_payment?id={{ order.id }}&total={{ total }}" class="btn btn-lg btn-primary shadow-sm">
+                <i class="fas fa-credit-card"></i> Proceed to Payment
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center">
+        <h4>Your cart is empty!</h4>
+        <p>Start adding items to your cart.</p>
+        <a href="{% url 'user_product_view' %}" class="btn btn-success">Browse Products</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

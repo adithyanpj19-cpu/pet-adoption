@@ -1,0 +1,118 @@
+{% extends "breederbase.html" %}
+{% block content %}
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+    <div class="container position-relative">
+      <h1>Manage Pets</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="/shelterhome">Home</a></li>
+          <li class="current">Manage Pets</li>
+        </ol>
+      </nav>
+    </div>
+</div>
+
+<section id="manage-pet" class="section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-4">
+        <div class="col-lg-12">
+          <form action="" method="post" enctype="multipart/form-data" id="pet-form">
+            {% csrf_token %}
+            <input type="hidden" name="pet_id" id="pet_id">
+            <div class="row gy-4">
+              <div class="col-md-6">
+                <input type="text" name="name" class="form-control" placeholder="Pet Name" id="name" required>
+              </div>
+              <div class="col-md-6">
+                <input type="text" name="breed" class="form-control" placeholder="Breed" id="breed" required>
+              </div>
+              <div class="col-md-4">
+                <input type="number" name="age" class="form-control" placeholder="Age (in years)" id="age" required>
+              </div>
+              <div class="col-md-4">
+                <select name="gender" class="form-control" id="gender" required>
+                  <option value="" disabled hidden>Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <input type="text" name="color" class="form-control" placeholder="Color" id="color" required>
+              </div>
+              <div class="col-md-12">
+                <label><strong>Vaccinated:</strong></label><br>
+                <input type="radio" name="vaccinated" value="True" id="vaccinated_yes" required> Yes
+                <input type="radio" name="vaccinated" value="False" id="vaccinated_no" required> No
+              </div>
+              <div class="col-md-6">
+                <input type="file" name="image" class="form-control" id="image">
+              </div>
+              <div class="col-md-6">
+                <select name="health" class="form-control" id="health" required>
+                  <option value="" disabled hidden>Select Health Status</option>
+                  <option value="Good">Good</option>
+                  <option value="Average">Average</option>
+                  <option value="Poor">Poor</option>
+                </select>
+              </div>
+              <div class="col-md-12">
+                <textarea name="description" class="form-control" placeholder="Description" id="description" required></textarea>
+              </div>
+              <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary">Save Pet</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row gy-4 mt-5">
+        <div class="col-lg-12">
+          <h2 class="text-center">Pets in Your Shop</h2>
+        </div>
+        {% for pet in pets %}
+        <div class="col-lg-4 col-md-6">
+          <div class="card h-100">
+            <img src="{{ pet.image.url }}" class="card-img-top" alt="{{ pet.name }}" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+              <h5 class="card-title">{{ pet.name }}</h5>
+              <p class="card-text"><strong>Breed:</strong> {{ pet.breed }}</p>
+              <p class="card-text"><strong>Age:</strong> {{ pet.age }} years</p>
+              <p class="card-text"><strong>Gender:</strong> {{ pet.gender }}</p>
+              <p class="card-text"><strong>Color:</strong> {{ pet.color }}</p>
+              <p class="card-text"><strong>Health:</strong> {{ pet.health_status }}</p>
+              <p class="card-text"><strong>Status:</strong> {{ pet.status }}</p>
+              <p class="card-text"><strong>Vaccinated:</strong> {% if pet.vaccinated %} Yes {% else %} No {% endif %}</p>
+              <p class="card-text">{{ pet.description }}</p>
+              <button class="btn btn-warning edit-pet" data-id="{{ pet.id }}" data-name="{{ pet.name }}" data-breed="{{ pet.breed }}" data-age="{{ pet.age }}" data-gender="{{ pet.gender }}" data-color="{{ pet.color }}" data-vaccinated="{{ pet.vaccinated }}" data-health="{{ pet.health }}" data-description="{{ pet.description }}">Edit</button>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-lg-12 text-center">
+          <p>No pets found. Start adding your first pet!</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+</section>
+
+<script>
+document.querySelectorAll('.edit-pet').forEach(button => {
+    button.addEventListener('click', function() {
+        document.getElementById('pet_id').value = this.dataset.id;
+        document.getElementById('name').value = this.dataset.name;
+        document.getElementById('breed').value = this.dataset.breed;
+        document.getElementById('age').value = this.dataset.age;
+        document.getElementById('gender').value = this.dataset.gender;
+        document.getElementById('color').value = this.dataset.color;
+        document.getElementById('health').value = this.dataset.health;
+        document.getElementById('description').value = this.dataset.description;
+        if (this.dataset.vaccinated === 'True') {
+            document.getElementById('vaccinated_yes').checked = true;
+        } else {
+            document.getElementById('vaccinated_no').checked = true;
+        }
+    });
+});
+</script>
+{% endblock content %}

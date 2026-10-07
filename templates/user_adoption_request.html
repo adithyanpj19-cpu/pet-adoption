@@ -1,0 +1,62 @@
+{% extends 'userbase.html' %}
+
+{% block content %}
+
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+    <div class="container position-relative">
+        <h1>Adoption Requests</h1>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/userhome">Home</a></li>
+                <li class="current">Requests</li>
+            </ol>
+        </nav>
+    </div>
+  </div>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">My Pet Adoption Requests</h2>
+
+    {% if adoption_requests %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Pet Image</th>
+                        <th>Pet Name</th>
+                        <th>Breed</th>
+                        <th>Requested On</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in adoption_requests %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <img src="{{ request.pet.image.url }}" alt="{{ request.pet.name }}" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
+                        </td>
+                        <td class="fw-bold">{{ request.pet.name }}</td>
+                        <td>{{ request.pet.breed }}</td>
+                        <td>{{ request.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            {% if request.status == "Pending" %}
+                                <span class="badge bg-warning text-dark px-3 py-2">Pending</span>
+                            {% elif request.status == "Approved" %}
+                                <span class="badge bg-success px-3 py-2">Approved</span>
+                            {% elif request.status == "Rejected" %}
+                                <span class="badge bg-danger px-3 py-2">Rejected</span>
+                            {% else %}
+                                <span class="badge bg-secondary px-3 py-2">Unknown</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center fs-5">You have not made any pet adoption requests yet.</div>
+    {% endif %}
+</div>
+{% endblock %}

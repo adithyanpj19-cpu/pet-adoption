@@ -1,0 +1,85 @@
+{% extends "userbase.html" %}
+
+
+{% block content %}
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+  <div class="container position-relative">
+      <h1>Adopt Request</h1>
+      <nav class="breadcrumbs">
+          <ol>
+              <li><a href="/userhome">Home</a></li>
+              <li class="current">Request</li>
+          </ol>
+      </nav>
+  </div>
+</div>
+    <!-- Adopt Pet Form Section -->
+    <section id="adopt-pet" class="adopt-pet section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4 mt-1">
+          <h1>{{pet.breed}}</h1>
+          <div class="col-lg-12">
+            <form action="" method="post" class="" data-aos="fade-up" data-aos-delay="400">
+              {% csrf_token %}
+              <div class="row gy-4">
+
+                <div class="col-md-6">
+                  <select name="living_situation" id="living_situation" class="form-control" required>
+                    <option value="" disabled selected>-- Select Living Situation --</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="House with Yard">House with Yard</option>
+                    <option value="Farm/Rural Area">Farm/Rural Area</option>
+                    <option value="Shared Housing">Shared Housing</option>
+                    <option value="Pet-Friendly Rental">Pet-Friendly Rental</option>
+                    <option value="Other">Other</option>
+                </select>
+                </div>
+
+                <div class="col-md-6">
+                  <select name="pet_experience" id="pet_experience" class="form-control" required>
+                    <option value="" disabled selected>-- Select Your Experience Level --</option>
+                    <option value="First-time Pet Owner">First-time Pet Owner</option>
+                    <option value="Some Experience">Some Experience</option>
+                    <option value="Experienced Pet Owner">Experienced Pet Owner</option>
+                    <option value="Professional Experience">Professional Experience</option>
+                    <option value="Other">Other</option>
+                </select>                </div>
+
+                <div class="col-md-6">
+                <select name="employment_status" id="employment_status" class="form-control" required>
+                  <option value="" disabled hidden selected>-- Select Employment Status --</option>
+                  <option value="Employed">Employed</option>
+                  <option value="Self-employed">Self-employed</option>
+                  <option value="Student">Student</option>
+                  <option value="Unemployed">Unemployed</option>
+                </select>
+                </div>
+
+                <div class="col-md-6">
+                  <input type="text" name="other_pets_details" class="form-control" placeholder="If any, enter pet names" required="">
+                </div>
+
+                <div class="col-md-12">
+                  <textarea name="additional_notes" class="form-control" placeholder="Additional Notes or Preferences"></textarea>
+                </div>
+
+                <div class="col-md-12 text-center">
+                  <button type="submit" class="btn btn-primary">Submit for Approval</button>
+                </div>
+
+              </div>
+            </form>
+          </div><!-- End Form -->
+
+        </div>
+
+      </div>
+
+    </section><!-- End Adopt Pet Form Section -->
+
+ 
+  {% endblock content %}
+
+  

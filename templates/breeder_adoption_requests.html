@@ -1,0 +1,81 @@
+{% extends 'breederbase.html' %}
+
+{% block content %}
+<div class="page-title dark-background" style="background-image: url(../static/assets/img/page-title-bg.jpg);">
+    <div class="container position-relative">
+        <h1> Requests</h1>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/userhome">Home</a></li>
+                <li class="current">Requests</li>
+            </ol>
+        </nav>
+    </div>
+  </div>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Manage Pet Adoption Requests</h2>
+
+    {% if adoption_requests %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Pet Image</th>
+                        <th>Pet Name</th>
+                        <th>Requester</th>
+                        <th>Contact</th>
+                        <th>Requested On</th>
+                        <th>Status</th>
+                        <th>Approve/Reject</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in adoption_requests %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <img src="{{ request.pet.image.url }}" alt="{{ request.pet.name }}" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
+                        </td>
+                        <td class="fw-bold">{{ request.pet.name }}</td>
+                        <td>{{ request.user.name }}</td>
+                        <td>{{ request.user.phone }}</td>
+                        <td>{{ request.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            {% if request.status == "Pending" %}
+                                <span class="badge bg-warning text-dark px-3 py-2">Pending</span>
+                            {% elif request.status == "Approved" %}
+                                <span class="badge bg-success px-3 py-2">Approved</span>
+                            {% elif request.status == "Rejected" %}
+                                <span class="badge bg-danger px-3 py-2">Rejected</span>
+                            {% else %}
+                                <span class="badge bg-secondary px-3 py-2">Unknown</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if request.status == "Pending" %}
+                               <a href="/update_adoption_requestb?id={{ request.id }}&status=Approved" class="btn btn-success">Approve</a>
+                                 <a href="/update_adoption_requestb?id={{ request.id }}&status=Rejected" class="btn btn-danger">Reject</a>
+                            {% else %}
+                                <span class="text-muted">No Action Needed</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if request.status == "Pending" %}
+                            <a href="/requester_data?id={{ request.id }}" class="btn btn-primary">View Details</a>
+                            {% comment %} <a href="/breeder_chat?rid={{ request.id }}&uid={{ request.user.id }}" class="btn btn-primary">chat</a> {% endcomment %}
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center fs-5">No pending pet adoption requests.</div>
+    {% endif %}
+</div>
+{% endblock %}
